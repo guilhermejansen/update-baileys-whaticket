@@ -24,10 +24,13 @@
   "license": "MIT",
   "description": "API to update Baileys to the latest and patched version for emergency fix as of June 13, 2024.",
   "dependencies": {
+    "axios": "^1.7.2",
     "child_process": "^1.0.2",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.2",
     "nodemon": "^3.1.3",
