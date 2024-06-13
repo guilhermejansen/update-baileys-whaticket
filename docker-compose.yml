@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  update-baileys-whaticket:
+    image: setupautomatizado/update-baileys-whaticket:latest
+    networks:
+      - network_public
+    environment:
+      - PORT=5000
+      - TZ=America/Sao_Paulo
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure     
+      placement:
+        constraints: [node.role == manager]
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2000M
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.update-baileys-whaticket.rule=Host(`baileys.update.setupautomatizado.com`)
+        - traefik.http.routers.update-baileys-whaticket.entrypoints=websecure
+        - traefik.http.routers.update-baileys-whaticket.priority=1
+        - traefik.http.routers.update-baileys-whaticket.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.update-baileys-whaticket.service=update-baileys-whaticket
+        - traefik.http.services.update-baileys-whaticket.loadbalancer.server.port=5000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  network_public:
+    name: network_public
+    external: true
